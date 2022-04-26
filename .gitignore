@@ -1,0 +1,5 @@
+.gradle
+.idea
+build
+gradle/wrapper
+mongodb_data_container

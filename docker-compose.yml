@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  database:
+    # https://faun.pub/managing-mongodb-on-docker-with-docker-compose-26bf8a0bbae3
+    container_name: mongodb-container
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: wal
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker-mongo-init.js:/docker-entrypoint-initdb.d/docker-mongo-init.js:ro
+      - ./mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
+
