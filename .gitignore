@@ -1,5 +1,7 @@
 .gradle
 .idea
 build
-gradle/wrapper
 mongodb_data_container
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle/wrapper

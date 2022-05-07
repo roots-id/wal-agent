@@ -11,11 +11,9 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
+@RequestMapping("/connections")
 @RestController
 class ConnectionUtilController(private val connectionService: ConnectionService) {
     @Operation(summary = "Send a basic message to a connection", tags = ["basicmessage"])
@@ -27,7 +25,7 @@ class ConnectionUtilController(private val connectionService: ConnectionService)
             )
         ]
     )
-    @PostMapping("/connections/{connId}/send-message")
+    @PostMapping("/{connId}/send-message")
     fun sendMessage(@RequestBody payload: SendMessageRequest): BasicMessageModuleResponse = connectionService.sendPing(payload)
 
     @Operation(summary = "Send a trust ping to a connection", tags = ["pingtrust"])
@@ -39,6 +37,6 @@ class ConnectionUtilController(private val connectionService: ConnectionService)
             )
         ]
     )
-    @PostMapping("/connections/{connId}/send-ping")
+    @PostMapping("/{connId}/send-ping")
     fun sendPing(@PathVariable connId: String, @RequestBody payload: PingRequest): PingResponse = connectionService.sendPing(payload)
 }

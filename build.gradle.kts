@@ -39,11 +39,12 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(group = "org.mockito", module = "mockito-core")
-		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+		exclude(module = "mockito-core")
+		exclude(module = "junit-vintage-engine")
 	}
-	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-	testImplementation("com.ninja-squad:springmockk:3.0.1")
+	testImplementation("org.junit.jupiter:junit-jupiter-engine")
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testImplementation("com.ninja-squad:springmockk:3.1.1")
 }
 
 tasks.withType<KotlinCompile> {

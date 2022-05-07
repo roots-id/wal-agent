@@ -14,10 +14,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@WebMvcTest
+@WebMvcTest(ConnectionController::class)
 class ConnectionControllerTest(@Autowired val mockMvc: MockMvc) {
     @MockkBean
-    lateinit var connectionService: ConnectionService
+    private lateinit var connectionService: ConnectionService
 
     @Test
     fun givenNewConnectionInvite_whenPostRequest_thenReturnsUnhandledErrorWithStatus500() {

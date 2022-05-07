@@ -14,6 +14,6 @@ class OutOfBandService {
     }
 
     fun createInvitation(invitationMessageRequest: InvitationMessageRequest): ConnRecordResponse {
-        return ConnRecordResponse(null, null, UUID.randomUUID().toString())
+        return ConnRecordResponse(null, null, UUID.randomUUID())
     }
 }
