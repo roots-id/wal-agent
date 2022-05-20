@@ -11,18 +11,23 @@
 */
 package com.rootsid.wal.agent.api.model.outofband
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * 
  * @param header 
  * @param &#x60;protected&#x60; protected JWS header
  * @param signature signature
  */
+@Schema
 data class AttachDecoratorData1JWS (
     val header: AttachDecoratorDataJWSHeader,
-    /* signature */
+
+    @Schema(description = "Protected JWS header", example = "ey4uLn0", pattern = "^[-_a-zA-Z0-9]*\$")
+    val `protected`: String? = null,
+
+    @Schema(description = "Signature", example = "ey4uLn0", pattern = "^[-_a-zA-Z0-9]*\$")
     val signature: String,
-    /* protected JWS header */
-    val `protected`: String? = null
 ) {
 
 }

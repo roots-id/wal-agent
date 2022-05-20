@@ -11,6 +11,8 @@
 */
 package com.rootsid.wal.agent.api.model.outofband
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * 
  * @param header 
@@ -18,13 +20,17 @@ package com.rootsid.wal.agent.api.model.outofband
  * @param signature signature
  * @param signatures List of signatures
  */
+@Schema
 data class AttachDecoratorDataJWS (
     val header: AttachDecoratorDataJWSHeader? = null,
-    /* protected JWS header */
+
+    @Schema(description = "Protected JWS header", example = "ey4uLn0", pattern = "^[-_a-zA-Z0-9]*\$")
     val `protected`: String? = null,
-    /* signature */
+
+    @Schema(description = "Signature", example = "ey4uLn0", pattern = "^[-_a-zA-Z0-9]*\$")
     val signature: String? = null,
-    /* List of signatures */
+
+    @Schema(description = "List of signatures")
     val signatures: List<AttachDecoratorData1JWS>? = null
 ) {
 
