@@ -23,6 +23,22 @@ springBoot {
 
 repositories {
 	mavenCentral()
+
+	maven {
+		url = uri("https://maven.pkg.github.com/input-output-hk/better-parse")
+		credentials {
+			username = System.getenv("PRISM_SDK_USER")
+			password = System.getenv("PRISM_SDK_PASSWORD")
+		}
+	}
+
+	maven {
+		url = uri("https://maven.pkg.github.com/roots-id/wal-library")
+		credentials {
+			username = System.getenv("GITHUB_USER")
+			password = System.getenv("GITHUB_TOKEN")
+		}
+	}
 }
 
 dependencies {
@@ -33,16 +49,16 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+	// Third-parties
+	implementation("com.rootsid.wal:wal-library:2.0.1")
+
 	// Swagger
-	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.7")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
-	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.7")
-	implementation("org.projectlombok:lombok:1.18.20")
+	val openapiVersion = "1.6.9"
+	implementation("org.springdoc:springdoc-openapi-data-rest:$openapiVersion")
+	implementation("org.springdoc:springdoc-openapi-ui:$openapiVersion")
+	implementation("org.springdoc:springdoc-openapi-kotlin:$openapiVersion")
 
-	// Utils
-	compileOnly("org.projectlombok:lombok")
-	annotationProcessor("org.projectlombok:lombok")
-
+	// Test
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(module = "mockito-core")
 	}

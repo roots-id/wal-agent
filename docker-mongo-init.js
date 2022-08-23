@@ -7,21 +7,7 @@ db.createCollection('wallets');
 db.wallets.insertMany([
     {
         _id: "issuer_dummy_wallet",
-        mnemonic: [
-            "home",
-            "ridge",
-            "order",
-            "dove",
-            "need",
-            "patient",
-            "practice",
-            "steel",
-            "bicycle",
-            "cute",
-            "laugh",
-            "gown"
-        ],
-        passphrase: "",
+        seed: "027a3db3567abeafe90e9bf626fcb0fdf02a53eece9dcccde86b8ade48421778",
         dids: [
             {
                 alias: "issuer_did",
@@ -106,21 +92,7 @@ db.wallets.insertMany([
     },
     {
         _id: "holder_dummy_wallet",
-        mnemonic: [
-            "poet",
-            "account",
-            "require",
-            "learn",
-            "misery",
-            "monitor",
-            "medal",
-            "great",
-            "blossom",
-            "steak",
-            "rain",
-            "crisp"
-        ],
-        passphrase: "",
+        seed: "2d0c04c8c5b285103b72677528a15bcf880161820d571107572de82c296b2f54",
         dids: [
             {
                 alias: "holder_did",
