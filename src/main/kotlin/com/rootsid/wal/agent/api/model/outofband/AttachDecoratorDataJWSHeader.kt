@@ -11,13 +11,17 @@
 */
 package com.rootsid.wal.agent.api.model.outofband
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 
 /**
  * 
  * @param kid Key identifier, in W3C did:key or DID URL format
  */
+@Schema
 data class AttachDecoratorDataJWSHeader (
-    /* Key identifier, in W3C did:key or DID URL format */
+    @Schema(description = "Key identifier, in W3C did:key or DID URL format", example = "did:sov:LjgpST2rjsoxYegQDRm7EL#keys-4",
+        pattern = "^did:(?:key:z[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+|sov:[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{21,22}(;.*)?(\\?.*)?#.+)\$")
     val kid: String
 ) {
 

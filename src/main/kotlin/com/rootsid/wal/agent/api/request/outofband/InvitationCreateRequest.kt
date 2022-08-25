@@ -30,5 +30,11 @@ data class InvitationCreateRequest (
         var myLabel: String?,
 
         @Schema(description = "Whether to use public DID in invitation", example = "false")
-        var usePublicDid: Boolean
+        var usePublicDid: Boolean,
+
+        @Schema(description = "Auto-accept connection", defaultValue = "false", example = "false")
+        var autoAccept: Boolean = false,
+
+        @Schema(description = "Create invitation for multiple use", defaultValue = "false", example = "false")
+        var multiUse: Boolean = false
 )

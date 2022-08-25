@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class ConnectionController(private val connectionService: ConnectionService) {
 
+    @Deprecated("Replaced by out-of-band")
     @Operation(summary = "Create a new connection invitation", tags = ["connections"])
     @ApiResponses(
         value = [

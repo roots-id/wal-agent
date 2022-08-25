@@ -32,3 +32,9 @@ jobs:
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: build
+      env:
+        GITHUB_USER: ${{secrets.ARTIFACT_REPO_USER}}
+        GITHUB_TOKEN: ${{secrets.ARTIFACT_REPO_TOKEN}}
+        PRISM_NODE_HOST: ${{secrets.PRISM_NODE_HOST}}
+        PRISM_SDK_PASSWORD: ${{secrets.PRISM_SDK_PASSWORD}}
+        PRISM_SDK_USER: ${{secrets.PRISM_SDK_USER}}

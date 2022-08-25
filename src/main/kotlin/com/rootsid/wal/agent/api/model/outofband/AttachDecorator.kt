@@ -24,7 +24,7 @@ data class AttachDecorator (
 
         @Schema(description = "Hint regarding last modification datetime, in ISO-8601 format", example = "2021-12-31T23:59:59Z",
                 pattern = "^\\d{4}-\\d\\d-\\d\\d[T ]\\d\\d:\\d\\d(?:\\:(?:\\d\\d(?:\\.\\d{1,6})?))?(?:[+-]\\d\\d:?\\d\\d|Z|)\$")
-        val lastmodTime: String? = null,
+        val lastModTime: String? = null,
 
         @Schema(description = "MIME type", example = "image/png")
         val mimeType: String? = null

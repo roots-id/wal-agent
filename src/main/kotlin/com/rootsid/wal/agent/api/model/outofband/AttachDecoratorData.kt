@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @param links List of hypertext links to data
  * @param sha256 SHA256 hash (binhex encoded) of content
  */
+@Schema
 data class AttachDecoratorData (
     @Schema(description = "Base64-encoded data", example = "ey4uLn0=", pattern = "^[a-zA-Z0-9+/]*={0,2}\$")
     val base64: String? = null,
