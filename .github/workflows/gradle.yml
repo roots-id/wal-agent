@@ -33,8 +33,8 @@ jobs:
       with:
         arguments: build
       env:
-        ARTIFACT_REPO_USER: ${{secrets.ARTIFACT_REPO_USER}}
-        ARTIFACT_REPO_TOKEN: ${{secrets.ARTIFACT_REPO_TOKEN}}
+        GITHUB_USER: ${{secrets.ARTIFACT_REPO_USER}}
+        GITHUB_TOKEN: ${{secrets.ARTIFACT_REPO_TOKEN}}
         PRISM_NODE_HOST: ${{secrets.PRISM_NODE_HOST}}
         PRISM_SDK_PASSWORD: ${{secrets.PRISM_SDK_PASSWORD}}
         PRISM_SDK_USER: ${{secrets.PRISM_SDK_USER}}

@@ -35,8 +35,8 @@ repositories {
 	maven {
 		url = uri("https://maven.pkg.github.com/roots-id/wal-library")
 		credentials {
-			username = System.getenv("ARTIFACT_REPO_USER")
-			password = System.getenv("ARTIFACT_REPO_TOKEN")
+			username = System.getenv("GITHUB_USER")
+			password = System.getenv("GITHUB_TOKEN")
 		}
 	}
 }
