@@ -12,6 +12,8 @@ import java.util.*
 
 @Service
 class WalletDataProvider(private val walletRepository: WalletRepository) : WalletStorage {
+    override fun createWalletObject(walletId: String, seed: String): WalletEntity = WalletEntity(walletId, seed)
+
     /**
      * Insert wallet
      *
@@ -19,7 +21,7 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
      * @return true if the operation was acknowledged
      */
     override fun insert(wallet: Wallet): Wallet {
-        return walletRepository.save(wallet as WalletEntity);
+        return walletRepository.save(wallet as WalletEntity)
     }
 
     /**
@@ -29,7 +31,8 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
      * @return true if the operation was acknowledged
      */
     override fun update(wallet: Wallet): Boolean {
-        return insert(wallet) != null
+        insert(wallet)
+        return true
     }
 
     /**
@@ -61,20 +64,19 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
         return walletRepository.findById(walletId).isPresent
     }
 
-    override fun findDidByAlias(walletId: String, didAlias: String): Optional<Did> {
-        return walletRepository.findDidByAlias(walletId, didAlias)
+    override fun findDidByAlias(walletId: String, alias: String): Optional<Did> {
+        return walletRepository.findDidByAlias(walletId, alias)
             .orElseThrow { ResourceNotFoundException("Wallet with id=[$walletId] not found") }
             .dids.stream().findFirst()
     }
 
     override fun listDids(walletId: String): List<Did> {
-        return findById(walletId)?.dids
+        return findById(walletId).dids
     }
 
     /**
      * Did alias exists
      *
-     * @param db MongoDB Client
      * @param walletId name of the wallet storing the did
      * @param didAlias alias of the did
      * @return true if the did was found
@@ -88,7 +90,6 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
     /**
      * Key id exists
      *
-     * @param db MongoDB Client
      * @param walletId name of the wallet storing the did
      * @param didAlias alias of the did
      * @param keyId key identifier
@@ -104,7 +105,6 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
     /**
      * Issued credential alias exists
      *
-     * @param db MongoDB Client
      * @param issuedCredentialAlias credential alias to find
      * @return true if the did was found
      */
@@ -119,7 +119,6 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
     /**
      * Credential alias exists
      *
-     * @param db MongoDB Client
      * @param credentialAlias credential alias to find
      * @return true if the did was found
      */

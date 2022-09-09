@@ -50,7 +50,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	// Third-parties
-	implementation("com.rootsid.wal:wal-library:2.0.1")
+	implementation("com.rootsid.wal:wal-library:2.0.2-SNAPSHOT")
 
 	// Swagger
 	val openapiVersion = "1.6.9"
