@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.6.7"
+	id("org.springframework.boot") version "2.6.11"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
@@ -50,7 +50,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	// Third-parties
-	implementation("com.rootsid.wal:wal-library:2.0.2-SNAPSHOT")
+	implementation("com.rootsid.wal:wal-library:2.0.3-SNAPSHOT")
+
+	// DIDComm
+	implementation("org.didcommx:didcomm:0.3.0")
+	implementation("org.didcommx:peerdid:0.3.0")
 
 	// Swagger
 	val openapiVersion = "1.6.9"
