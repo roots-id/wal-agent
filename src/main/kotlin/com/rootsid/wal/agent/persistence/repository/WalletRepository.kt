@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import java.util.*
 
-interface WalletRepository : CrudRepository<WalletEntity, String> {
+sealed interface WalletRepository : CrudRepository<WalletEntity, String> {
 
     @Query(value = "{ _id: :#{#walletId}, dids: { \$elemMatch: { alias: :#{#didAlias} } } }")
     fun findDidByAlias(@Param("walletId") walletId: String, @Param("didAlias") didAlias: String): Optional<WalletEntity>
