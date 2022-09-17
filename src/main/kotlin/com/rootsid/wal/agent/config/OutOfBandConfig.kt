@@ -1,19 +1,19 @@
 package com.rootsid.wal.agent.config
 
 
-import com.rootsid.wal.agent.persistence.DidComSecretDataProvider
-import com.rootsid.wal.library.didcom.DIDPeer
-import com.rootsid.wal.library.didcom.storage.SecretResolverCustom
+import com.rootsid.wal.agent.persistence.DidCommSecretDataProvider
+import com.rootsid.wal.library.didcomm.DIDPeer
+import com.rootsid.wal.library.didcomm.storage.SecretResolverCustom
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class OutOfBandConfig {
     @Bean
-    fun didPeer(didComSecretDataProvider: DidComSecretDataProvider): DIDPeer =
-        DIDPeer(secretResolverAgent(didComSecretDataProvider))
+    fun didPeer(didCommSecretDataProvider: DidCommSecretDataProvider): DIDPeer =
+        DIDPeer(secretResolverAgent(didCommSecretDataProvider))
 
     @Bean
-    fun secretResolverAgent(didComSecretDataProvider: DidComSecretDataProvider): SecretResolverCustom =
-        SecretResolverCustom(didComSecretDataProvider)
+    fun secretResolverAgent(didCommSecretDataProvider: DidCommSecretDataProvider): SecretResolverCustom =
+        SecretResolverCustom(didCommSecretDataProvider)
 }
