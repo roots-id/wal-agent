@@ -50,7 +50,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	// Third-parties
-	implementation("com.rootsid.wal:wal-library:2.0.3-SNAPSHOT")
+	implementation("com.rootsid.wal:wal-library:2.0.4-SNAPSHOT")
 
 	// DIDComm
 	implementation("org.didcommx:didcomm:0.3.0")
