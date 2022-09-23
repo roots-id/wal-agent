@@ -2,7 +2,6 @@ package com.rootsid.wal.agent.config
 
 import com.rootsid.wal.library.didcomm.common.DidCommDataTypes
 import com.rootsid.wal.library.didcomm.common.StorageRepresentable
-import com.rootsid.wal.library.didcomm.common.findBy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
@@ -22,6 +21,7 @@ class MongoDBConfig {
                 InvitationModeReadConverter(),
                 ConnectionProtocolReadConverter(),
                 RoutingStateReadConverter(),
+                AcceptReadConverter(),
                 StorageRepresentableWriteConverter()
             )
         )
@@ -36,31 +36,37 @@ class StorageRepresentableWriteConverter : Converter<StorageRepresentable<String
 }
 
 @ReadingConverter
-class ConnectionStatusReadConverter : Converter<String?, DidCommDataTypes.ConnectionStatus?> {
-    override fun convert(source: String): DidCommDataTypes.ConnectionStatus? =
-        findBy(source)
+class ConnectionStatusReadConverter : Converter<String?, DidCommDataTypes.ConnectionState?> {
+    override fun convert(source: String): DidCommDataTypes.ConnectionState? =
+        DidCommDataTypes.findByStorageRepresentation(source)
 }
 
 @ReadingConverter
 class TheirRoleReadConverter : Converter<String?, DidCommDataTypes.TheirRole?> {
     override fun convert(source: String): DidCommDataTypes.TheirRole? =
-        findBy(source)
+        DidCommDataTypes.findByStorageRepresentation(source)
 }
 
 @ReadingConverter
 class InvitationModeReadConverter : Converter<String?, DidCommDataTypes.InvitationMode?> {
     override fun convert(source: String): DidCommDataTypes.InvitationMode? =
-        findBy(source)
+        DidCommDataTypes.findByStorageRepresentation(source)
 }
 
 @ReadingConverter
 class ConnectionProtocolReadConverter : Converter<String?, DidCommDataTypes.ConnectionProtocol?> {
     override fun convert(source: String): DidCommDataTypes.ConnectionProtocol? =
-        findBy(source)
+        DidCommDataTypes.findByStorageRepresentation(source)
 }
 
 @ReadingConverter
 class RoutingStateReadConverter : Converter<String?, DidCommDataTypes.RoutingState?> {
     override fun convert(source: String): DidCommDataTypes.RoutingState? =
-        findBy(source)
+        DidCommDataTypes.findByStorageRepresentation(source)
+}
+
+@ReadingConverter
+class AcceptReadConverter : Converter<String?, DidCommDataTypes.Accept?> {
+    override fun convert(source: String): DidCommDataTypes.Accept? =
+        DidCommDataTypes.findByStorageRepresentation(source)
 }

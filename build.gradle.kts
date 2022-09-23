@@ -50,7 +50,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	// Third-parties
-	implementation("com.rootsid.wal:wal-library:2.0.4-SNAPSHOT")
+	implementation("com.rootsid.wal:wal-library:2.0.5-SNAPSHOT")
+
+	// Needed for cryptography primitives implementation
+	implementation("io.iohk.atala:prism-api:v1.4.1")
 
 	// DIDComm
 	implementation("org.didcommx:didcomm:0.3.0")

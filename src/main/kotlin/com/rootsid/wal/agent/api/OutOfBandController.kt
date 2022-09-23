@@ -2,8 +2,8 @@ package com.rootsid.wal.agent.api
 
 import com.rootsid.wal.agent.api.request.outofband.InvitationCreateRequest
 import com.rootsid.wal.agent.api.request.outofband.InvitationMessageRequest
-import com.rootsid.wal.agent.api.response.outofband.ConnRecordResponse
 import com.rootsid.wal.agent.api.response.outofband.InvitationRecordResponse
+import com.rootsid.wal.agent.api.response.outofband.ReceiveInvitationResponse
 import com.rootsid.wal.agent.service.OutOfBandService
 import io.swagger.v3.oas.annotations.ExternalDocumentation
 import io.swagger.v3.oas.annotations.Operation
@@ -39,6 +39,6 @@ class OutOfBandController(private val outOfBandService: OutOfBandService) {
             ApiResponse(responseCode = "404", description = "The resource not found")]
     )
     @PostMapping("/receive-invitation")
-    fun receiveInvitation(@RequestBody payload: InvitationMessageRequest): ConnRecordResponse =
-        outOfBandService.createInvitation(payload)
+    fun receiveInvitation(@RequestBody payload: InvitationMessageRequest): ReceiveInvitationResponse =
+        outOfBandService.receiveInvitation(payload)
 }
