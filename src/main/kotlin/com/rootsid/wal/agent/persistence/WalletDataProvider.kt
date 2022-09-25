@@ -2,10 +2,12 @@ package com.rootsid.wal.agent.persistence
 
 import com.rootsid.wal.agent.exception.ResourceNotFoundException
 import com.rootsid.wal.agent.persistence.model.WalletEntity
-import com.rootsid.wal.agent.persistence.repository.WalletRepository
 import com.rootsid.wal.library.dlt.model.Did
 import com.rootsid.wal.library.wallet.model.Wallet
 import com.rootsid.wal.library.wallet.storage.WalletStorage
+import org.springframework.data.mongodb.repository.Query
+import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -128,4 +130,9 @@ class WalletDataProvider(private val walletRepository: WalletRepository) : Walle
 
         return true
     }
+}
+
+interface WalletRepository : CrudRepository<WalletEntity, String> {
+    @Query(value = "{ _id: :#{#walletId}, dids: { \$elemMatch: { alias: :#{#didAlias} } } }")
+    fun findDidByAlias(@Param("walletId") walletId: String, @Param("didAlias") didAlias: String): Optional<WalletEntity>
 }

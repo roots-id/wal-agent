@@ -3,6 +3,7 @@ package com.rootsid.wal.agent.api.response.outofband
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 
+@Deprecated("We are not using the connection object")
 @Schema
 data class ConnRecordResponse (
     @Schema(description = "Connection acceptance: manual or auto", example = "auto")

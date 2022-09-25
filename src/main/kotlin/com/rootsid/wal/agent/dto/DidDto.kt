@@ -11,9 +11,8 @@ data class DidDto(
     val uriCanonical: String,
     val uriLongForm: String,
     var keyPaths: MutableList<KeyPath> = mutableListOf(),
-    var operationHash: String? = null,
-    var publishedStatus: Any? = null,
-    var publishedOperationId: String? = null
+    var operationId: MutableList<String> = mutableListOf(),
+    var operationHash: MutableList<String> = mutableListOf()
 )
 
 fun Did.convert() = DidDto(
@@ -22,9 +21,8 @@ fun Did.convert() = DidDto(
     uriCanonical = uriCanonical,
     uriLongForm = uriLongForm,
     keyPaths = keyPaths,
-    operationHash = operationHash,
-    publishedStatus = publishedStatus,
-    publishedOperationId = publishedOperationId,
+    operationId = operationId,
+    operationHash = operationHash
 )
 
 fun DidDto.convert() = Did(
