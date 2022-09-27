@@ -5,6 +5,7 @@ import com.rootsid.wal.library.wallet.model.ImportedCredential
 import com.rootsid.wal.library.wallet.model.IssuedCredential
 import com.rootsid.wal.library.wallet.model.Wallet
 import io.swagger.v3.oas.annotations.media.Schema
+import kotlin.streams.toList
 
 @Schema
 data class WalletDto (
@@ -22,4 +23,6 @@ fun Wallet.convert() = WalletDto(
     importedCredentials = importedCredentials,
     issuedCredentials = issuedCredentials,
 )
+
+fun List<Wallet>.convert(): List<WalletDto> = this.stream().map { it.convert() }.toList()
 

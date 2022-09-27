@@ -26,7 +26,7 @@ class OpenApiConfig {
             .info(
                 Info()
                     .title("Wal-Agent Api")
-                    .description("Spring shop sample application")
+                    .description("RootsId Wal-Agent sample application")
                     .version("1.0.0")
                     .license(License().name("Apache 2.0").url("http://www.apache.org/licenses/LICENSE-2.0"))
             )
@@ -39,21 +39,16 @@ class OpenApiConfig {
     }
 
     fun getProjectTagList(): List<Tag> {
-        // Basic Message
-        val basicmessageTag = Tag().name("basicmessage").description("Simple messaging")
+        // Actions
+        val actionTag = Tag().name("actions").description("Actions to play with")
             .externalDocs(ExternalDocumentation().description("Specification")
-                .url("https://github.com/hyperledger/aries-rfcs/tree/527849ec3aa2a8fd47a7bb6c57f918ff8bcb5e8c/features/0095-basic-message"))
-
-        // Ping Trust
-        val pingtrustTag = Tag().name("pingtrust").description("Trust-ping over connection")
-            .externalDocs(ExternalDocumentation().description("Specification")
-                .url("https://github.com/hyperledger/aries-rfcs/tree/527849ec3aa2a8fd47a7bb6c57f918ff8bcb5e8c/features/0048-trust-ping"))
+                .url("https://github.com/dummy"))
         
         // Connections
         val connectionsTag = Tag().name("connections").description("Connection management")
             .externalDocs(ExternalDocumentation().description("Specification")
                 .url("https://github.com/hyperledger/aries-rfcs/tree/9b0aaa39df7e8bd434126c4b33c097aae78d65bf/features/0160-connection-protocol"))
 
-        return listOf(connectionsTag, basicmessageTag, pingtrustTag)
+        return listOf(connectionsTag, actionTag)
     }
 }

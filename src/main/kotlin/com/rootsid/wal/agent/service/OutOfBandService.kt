@@ -40,7 +40,7 @@ class OutOfBandService(
             didCommConnectionDataProvider.insert(
                 DidCommConnectionEntity(
                     alias = invitationCreateRequest.alias, state = DidCommDataTypes.ConnectionState.INVITATION_SENT,
-                    invitationKey = inviterDidPeer, invitationUrl = invitationUrl
+                    theirDid = inviterDidPeer, theirRole = DidCommDataTypes.TheirRole.INVITEE, invitationUrl = invitationUrl
                 )
             )
 
@@ -60,16 +60,20 @@ class OutOfBandService(
         val connection = didCommConnectionDataProvider.insert(
             DidCommConnectionEntity(
                 alias = invitationMessageRequest.alias,
-                invitationKey = invitationMessageRequest.invitationMessage.from,
+                invitationMsgId = invitationMessageRequest.invitationMessage.id,
+                theirDid = invitationMessageRequest.invitationMessage.from,
+                theirRole = DidCommDataTypes.TheirRole.INVITER,
                 myDid = inviteeDidPeer
             )
         )
 
         val message = didPeer.pack(
             data = """{"msg": "Hi Alice"}""", from = inviteeDidPeer,
-            to = invitationMessageRequest.invitationMessage.from
+            to = invitationMessageRequest.invitationMessage.from, protectSender = false
         )
         log.info("Packed message = [{}]", message)
+
+        log.info("Unpacked message = [{}]", didPeer.unpack(message.packedMessage))
 
         return ReceiveInvitationResponse(
             connectionId = connection._id,

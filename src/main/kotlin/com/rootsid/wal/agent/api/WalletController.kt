@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
-import kotlin.streams.toList
 
 @Tag(name="wallets", description = "Interaction with wallet",
     externalDocs = ExternalDocumentation(description = "Specification",
@@ -47,8 +46,7 @@ class WalletController(private val walletService: WalletService) {
             ApiResponse(responseCode = "404", description = "The resource not found")]
     )
     @GetMapping
-    fun list(): List<WalletDto> =
-        walletService.listWallets().stream().map { it.convert() }.toList()
+    fun list(): List<WalletDto> = walletService.listWallets().convert()
 
     @Operation(summary = "Retrieve wallet did")
     @ApiResponses(

@@ -10,7 +10,8 @@ import java.util.*
 @Document("didcomm_connections")
 data class DidCommConnectionEntity(
     override val alias: String,
-    override val invitationKey: String,
+    override val theirDid: String,
+    override val theirRole: DidCommDataTypes.TheirRole,
     override val accept: DidCommDataTypes.Accept = DidCommDataTypes.Accept.MANUAL,
     override val myDid: String? = null,
     @Id
@@ -18,7 +19,6 @@ data class DidCommConnectionEntity(
     override val invitationMsgId: String = UUID.randomUUID().toString(),
     override val invitationUrl: String? = null,
     override val state: DidCommDataTypes.ConnectionState = DidCommDataTypes.ConnectionState.START,
-    override val theirRole: DidCommDataTypes.TheirRole = DidCommDataTypes.TheirRole.INVITEE,
     override val invitationMode: DidCommDataTypes.InvitationMode = DidCommDataTypes.InvitationMode.SIMPLE,
     override val connectionProtocol: DidCommDataTypes.ConnectionProtocol = DidCommDataTypes.ConnectionProtocol.DIDCOMM_2_0,
     override val routingState: DidCommDataTypes.RoutingState = DidCommDataTypes.RoutingState.NONE,

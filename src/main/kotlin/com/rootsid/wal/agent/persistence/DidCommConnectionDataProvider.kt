@@ -18,6 +18,8 @@ class DidCommConnectionDataProvider(private val didCommConnectionRepository: Did
             .orElseThrow { RuntimeException("DidComm Connection with id=[$id] not found.") }
 
     override fun list(): List<DidCommConnection> = didCommConnectionRepository.findAll().toMutableList()
+
+    fun delete(id: String): Unit = didCommConnectionRepository.deleteById(id)
 }
 
 interface DidCommConnectionRepository : CrudRepository<DidCommConnectionEntity, String>

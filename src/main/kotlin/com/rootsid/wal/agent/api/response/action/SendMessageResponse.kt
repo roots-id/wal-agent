@@ -1,12 +1,10 @@
-package com.rootsid.wal.agent.api.request.connection
+package com.rootsid.wal.agent.api.response.action
 
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema
-data class SendMessageRequest (
+data class SendMessageResponse (
     @Schema(description = "Message content", example = "Hello")
     val content: String? = null
-) {
-
-}
+)
 
