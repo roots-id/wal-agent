@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URI
 import java.util.*
 
-
 /**
  * @see <a href="https://identity.foundation/didcomm-messaging/spec/#plaintext-message-structure">Didcomm plaintext message structure</a>
  */
@@ -28,7 +27,15 @@ data class PlainTextMessage(
         example = "did:peer:2.Ez6LSi2DUKWessWhBACa8UBKjLSuPjyni3fjMgfrpCVDcErcf.Vz6MkgUkVUpzJ8KEqJTfyoKR8Xfe...",
         pattern = "^did:peer:([\\d+]).*"
     )
-    val from: String? = null,
+    val from: String,
+
+    @Schema(
+        description = "Prior sender's did. Used in the did rotation scenario. [Not Implemented]",
+        example = "did:peer:2.Ez6LSi2DUKWessWhBACa8UBKjLSuPjyni3fjMgfrpCVDcErcf.Vz6MkgUkVUpzJ8KEqJTfyoKR8Xfe...",
+        pattern = "^did:peer:([\\d+]).*"
+    )
+    @JsonProperty("from_prior")
+    val fromPrior: String? = null,
 
     @ArraySchema(arraySchema = Schema(
         description = "List of receiver's did",
@@ -70,3 +77,8 @@ data class PlainTextMessage(
 )
 
 fun PlainTextMessage.toJson(): String = jacksonObjectMapper().writeValueAsString(this)
+
+fun PlainTextMessage.isDidRotationMsg(): Boolean = (this.fromPrior?.isNotBlank() == true && this.from.isNotBlank())
+
+fun PlainTextMessage.isInvitationResponseMsg(): Boolean = Piuris.INVITATION_RESPONSE.value == this.type
+

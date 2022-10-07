@@ -10,10 +10,10 @@ import java.util.*
 @Document("didcomm_connections")
 data class DidCommConnectionEntity(
     override val alias: String,
-    override val theirDid: String,
+    override val myDid: String,
     override val theirRole: DidCommDataTypes.TheirRole,
+    override var theirDid: String? = null,
     override val accept: DidCommDataTypes.Accept = DidCommDataTypes.Accept.MANUAL,
-    override val myDid: String? = null,
     @Id
     override val _id: String = UUID.randomUUID().toString(),
     override val invitationMsgId: String = UUID.randomUUID().toString(),

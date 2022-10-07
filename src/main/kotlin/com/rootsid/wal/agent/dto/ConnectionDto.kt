@@ -41,7 +41,7 @@ fun DidCommConnection.convert() = ConnectionDto(
     id = _id,
     alias = alias,
     theirAlias = "",
-    theirDid = invitationKey,
+    theirDid = theirDid,
     createdAt = createdAt,
     updatedAt = updatedAt
 )
