@@ -45,5 +45,6 @@ data class InvitationMessage(
     val label: String? = null
 )
 
-fun InvitationMessage.toBase64(): String = Base64.getEncoder().encodeToString(jacksonObjectMapper().writeValueAsString(this).toByteArray())
+fun InvitationMessage.toBase64(): String =
+    Base64.getEncoder().encodeToString(jacksonObjectMapper().writeValueAsString(this).toByteArray())
 

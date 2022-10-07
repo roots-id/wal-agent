@@ -49,8 +49,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 	// Third-parties
-	implementation("com.rootsid.wal:wal-library:2.0.5-SNAPSHOT")
+	implementation("com.rootsid.wal:wal-library:2.0.7-SNAPSHOT")
 
 	// Needed for cryptography primitives implementation
 	implementation("io.iohk.atala:prism-api:v1.4.1")
@@ -60,7 +62,7 @@ dependencies {
 	implementation("org.didcommx:peerdid:0.3.0")
 
 	// Swagger
-	val openapiVersion = "1.6.9"
+	val openapiVersion = "1.6.11"
 	implementation("org.springdoc:springdoc-openapi-data-rest:$openapiVersion")
 	implementation("org.springdoc:springdoc-openapi-ui:$openapiVersion")
 	implementation("org.springdoc:springdoc-openapi-kotlin:$openapiVersion")
