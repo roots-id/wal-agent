@@ -1,12 +1,6 @@
 print('Start #################################################################');
 
-db = db.getSiblingDB('wal');
-dbInvitee = db.getSiblingDB('wal-agent-invitee');
-dbInviter = db.getSiblingDB('wal-agent-inviter');
-
-db.createCollection('wallets');
-
-db.wallets.insertMany([
+const walletsSample = [
     {
         "_id": "wal_t1",
         "seed": "a9421b5af592f3c3682968ffb053f90be2ec2c0c121ce4761ca4bc808a87e6612eb502dab3fb3cf8b27260c698f1ebcc1f7eee2b00da1cebd10c5abdb3f86eb3",
@@ -298,6 +292,20 @@ db.wallets.insertMany([
         issuedCredentials: [],
         blockchainTxLogEntry: []
     }
-]);
+];
+
+db = db.getSiblingDB('wal');
+db.createCollection('wallets');
+db.wallets.insertMany(walletsSample);
+
+// Invitee
+db = db.getSiblingDB('wal-agent-invitee');
+db.createCollection('wallets');
+db.wallets.insertMany(walletsSample);
+
+// Inviter
+db = db.getSiblingDB('wal-agent-inviter');
+db.createCollection('wallets');
+db.wallets.insertMany(walletsSample);
 
 print('End #################################################################');
