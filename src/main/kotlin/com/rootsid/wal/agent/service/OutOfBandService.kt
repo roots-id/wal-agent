@@ -6,6 +6,7 @@ import com.rootsid.wal.agent.api.model.didcomm.toJson
 import com.rootsid.wal.agent.api.model.outofband.BodyDecorator
 import com.rootsid.wal.agent.api.model.outofband.InvitationMessage
 import com.rootsid.wal.agent.api.model.outofband.toBase64
+import com.rootsid.wal.agent.api.request.action.ReceiveMessageRequest
 import com.rootsid.wal.agent.api.request.outofband.InvitationCreateRequest
 import com.rootsid.wal.agent.api.request.outofband.InvitationMessageRequest
 import com.rootsid.wal.agent.api.response.outofband.InvitationRecordResponse
@@ -13,8 +14,10 @@ import com.rootsid.wal.agent.api.response.outofband.ReceiveInvitationResponse
 import com.rootsid.wal.agent.config.properties.OutOfBandProperties
 import com.rootsid.wal.agent.persistence.DidCommConnectionDataProvider
 import com.rootsid.wal.agent.persistence.model.DidCommConnectionEntity
+import com.rootsid.wal.agent.restclient.DidCommWebClient
 import com.rootsid.wal.library.didcomm.DIDPeer
 import com.rootsid.wal.library.didcomm.common.DidCommDataTypes
+import com.rootsid.wal.library.didcomm.common.getServiceEndpoint
 import org.apache.commons.lang3.RandomStringUtils
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -26,7 +29,8 @@ import java.util.*
 class OutOfBandService(
     private val outOfBandProperties: OutOfBandProperties,
     private val didPeer: DIDPeer,
-    private val didCommConnectionDataProvider: DidCommConnectionDataProvider
+    private val didCommConnectionDataProvider: DidCommConnectionDataProvider,
+    private val didCommWebClient: DidCommWebClient
 ) {
     private val log = LoggerFactory.getLogger(OutOfBandService::class.java)
 
@@ -97,8 +101,28 @@ class OutOfBandService(
             to = invitationMessageRequest.invitationMessage.from
         )
         log.info("Packed message = [{}]", packMessage)
-
         log.info("Unpacked message = [{}]", didPeer.unpack(packMessage.packedMessage))
+
+        if (invitationMessageRequest.autoAccept) {
+            log.info("Start auto accept process.")
+            invitationMessageRequest.invitationMessage.from.getServiceEndpoint()?.let {
+                log.info("Send invitation response ack to [{}]", it)
+                didCommWebClient.receiveMessageSynchronous(
+                    it,
+                    ReceiveMessageRequest(packMessage.packedMessage)
+                )?.body.let { response ->
+                    log.info("Result of invitation response ack.  Body = [{}]", response)
+
+                    return ReceiveInvitationResponse(
+                        connectionId = connection._id,
+                        packedMessage = "Auto accepted executed",
+                        alias = invitationMessageRequest.alias
+                    )
+                }
+            }
+
+            log.error("Unable to execute the auto-accept process.")
+        }
 
         return ReceiveInvitationResponse(
             connectionId = connection._id,
