@@ -71,10 +71,7 @@ class ConnectionService(
         }
         log.info("Ack plaintext message = [{}]", ackPtMsg)
 
-        val ackMessage = didPeer.pack(
-            data = ackPtMsg, from = receivedMsg.to,
-            to = receivedPtMsg.from
-        )
+        val ackMessage = didPeer.pack(data = ackPtMsg, from = receivedMsg.to, to = receivedPtMsg.from)
         log.info("Packed ack message = [{}]", ackMessage)
 
         return ReceiveMessageResponse(ackMessage.packedMessage)
@@ -109,9 +106,8 @@ class ConnectionService(
     private fun handleDidRotation(receivedPtMsg: PlainTextMessage): String {
         receivedPtMsg.fromPrior?.let { fromPrior ->
             var conn = didCommConnectionDataProvider.findByTheirDid(fromPrior) as DidCommConnectionEntity
-            conn.theirDid = receivedPtMsg.from
 
-            didCommConnectionDataProvider.insert(conn)
+            didCommConnectionDataProvider.insert(conn.copy(theirDid = receivedPtMsg.from))
             log.info("Connection with id = [{}] updated.", conn._id)
 
             return PlainTextMessage(

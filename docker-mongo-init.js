@@ -1,6 +1,8 @@
 print('Start #################################################################');
 
 db = db.getSiblingDB('wal');
+dbInvitee = db.getSiblingDB('wal-agent-invitee');
+dbInviter = db.getSiblingDB('wal-agent-inviter');
 
 db.createCollection('wallets');
 
