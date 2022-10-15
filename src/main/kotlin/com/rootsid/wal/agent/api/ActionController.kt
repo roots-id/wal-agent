@@ -1,9 +1,11 @@
 package com.rootsid.wal.agent.api
 
 import com.rootsid.wal.agent.api.request.action.ReceiveMessageRequest
+import com.rootsid.wal.agent.api.request.action.SendDidRotationMessageRequest
 import com.rootsid.wal.agent.api.request.action.SendMessageRequest
 import com.rootsid.wal.agent.api.response.ErrorResponse
 import com.rootsid.wal.agent.api.response.action.ReceiveMessageResponse
+import com.rootsid.wal.agent.api.response.action.SendDidRotationMessageResponse
 import com.rootsid.wal.agent.api.response.action.SendMessageResponse
 import com.rootsid.wal.agent.service.ConnectionService
 import io.swagger.v3.oas.annotations.Operation
@@ -35,6 +37,20 @@ class ActionController(private val connectionService: ConnectionService) {
     @PostMapping("/send-message")
     fun sendMessage(@RequestBody payload: SendMessageRequest): SendMessageResponse =
         connectionService.sendMessage(payload)
+
+    @Operation(summary = "Send a did rotation message to a connection")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(
+                responseCode = "404", description = "The resource not found", useReturnTypeSchema = true,
+                content = [Content(schema = Schema(implementation = ErrorResponse::class))]
+            )
+        ]
+    )
+    @PostMapping("/send-did-rotation-message")
+    fun sendDidRotationMessage(@RequestBody payload: SendDidRotationMessageRequest): SendDidRotationMessageResponse =
+        connectionService.sendDidRotationMessage(payload)
 
     @Operation(summary = "Receive packed message")
     @ApiResponses(
