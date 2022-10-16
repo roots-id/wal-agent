@@ -6,3 +6,4 @@
                                          |___/
 ${application.title} v${application.version}
 Powered by Spring Boot ${spring-boot.version}
+Active profile ${spring.profiles.active}
