@@ -16,8 +16,11 @@ import com.rootsid.wal.agent.restclient.DidCommWebClient
 import com.rootsid.wal.library.didcomm.DIDPeer
 import com.rootsid.wal.library.didcomm.common.DidCommDataTypes
 import com.rootsid.wal.library.didcomm.common.getServiceEndpoint
+import org.didcommx.didcomm.model.PackEncryptedResult
+import org.didcommx.peerdid.PeerDID
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.net.URI
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -40,19 +43,22 @@ class ConnectionService(
 
         conn.myDid.let { myDid ->
             conn.theirDid?.let { theirDid ->
-                // Create didcomm plaintext message
-                val ptMsg = PlainTextMessage(
-                    type = Piuris.MESSAGE.value, from = myDid, to = mutableListOf(theirDid),
-                    body = payload.content, createdTime = Instant.now().toEpochMilli(),
-                    expiresTime = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
-                ).toJson()
-                log.info("Plaintext message = [{}]", ptMsg)
+                val message = buildMessage(from = myDid, to = theirDid, body = payload.content)
 
-                val message = didPeer.pack(
-                    data = ptMsg, from = myDid,
-                    to = theirDid
-                )
-                log.info("Packed message = [{}]", message)
+                if (payload.autoSend) {
+                    log.info("Start auto send process.")
+                    theirDid.getServiceEndpoint()?.let { serviceEndpoint ->
+                        log.info("Send message to [{}]", serviceEndpoint)
+                        didCommWebClient.receiveMessageSynchronous(
+                            serviceEndpoint,
+                            ReceiveMessageRequest(message.packedMessage)
+                        )?.body.let { response ->
+                            log.info("Result of message sent.  Body = [{}]", response)
+
+                            return SendMessageResponse()
+                        }
+                    }
+                }
 
                 return SendMessageResponse(message.packedMessage)
             }
@@ -71,19 +77,7 @@ class ConnectionService(
             didCommConnectionDataProvider.insert(it.copy(myDid = newMyDid))
         }.myDid.let { myDid ->
             conn.theirDid?.let { theirDid ->
-                // Create didcomm plaintext message
-                val ptMsg = PlainTextMessage(
-                    type = Piuris.MESSAGE.value, fromPrior = myDid, from = newMyDid, to = mutableListOf(theirDid),
-                    body = payload.content, createdTime = Instant.now().toEpochMilli(),
-                    expiresTime = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
-                ).toJson()
-                log.info("Plaintext message = [{}]", ptMsg)
-
-                val packMessage = didPeer.pack(
-                    data = ptMsg, from = newMyDid,
-                    to = theirDid
-                )
-                log.info("Packed message = [{}]", packMessage)
+                val message = buildMessage(fromPrior = myDid, from = newMyDid, to = theirDid, body = payload.content)
 
                 if (payload.autoSend) {
                     log.info("Start auto send process.")
@@ -91,7 +85,7 @@ class ConnectionService(
                         log.info("Send did rotation message to [{}]", serviceEndpoint)
                         didCommWebClient.receiveMessageSynchronous(
                             serviceEndpoint,
-                            ReceiveMessageRequest(packMessage.packedMessage)
+                            ReceiveMessageRequest(message.packedMessage)
                         )?.body.let { response ->
                             log.info("Result of did rotation message.  Body = [{}]", response)
 
@@ -100,7 +94,7 @@ class ConnectionService(
                     }
                 }
 
-                return SendDidRotationMessageResponse(status = "manual", content = packMessage.packedMessage)
+                return SendDidRotationMessageResponse(status = "manual", content = message.packedMessage)
             }
         }
 
@@ -188,5 +182,30 @@ class ConnectionService(
         }
 
         throw RuntimeException("Invalid message with id=[${receivedPtMsg.id}].")
+    }
+
+    private fun buildMessage(
+        from: PeerDID,
+        to: PeerDID,
+        body: String,
+        type: URI = Piuris.MESSAGE.value,
+        createdTime: Long = Instant.now().toEpochMilli(),
+        expiresTime: Long = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli(),
+        fromPrior: PeerDID? = null
+    ): PackEncryptedResult {
+        // Create didcomm plaintext message
+        val ptMsg = PlainTextMessage(
+            type = type, from = from, fromPrior = fromPrior, to = mutableListOf(to),
+            body = body, createdTime = createdTime, expiresTime = expiresTime
+        ).toJson()
+        log.info("Plaintext message = [{}]", ptMsg)
+
+        val message = didPeer.pack(
+            data = ptMsg, from = from,
+            to = to
+        )
+        log.info("Packed message = [{}]", message)
+
+        return message
     }
 }

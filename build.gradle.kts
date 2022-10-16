@@ -3,9 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "2.6.11"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.spring") version "1.6.10"
+	kotlin("jvm") version "1.6.21"
+	kotlin("plugin.spring") version "1.6.21"
 }
+
+apply(plugin = "io.spring.dependency-management")
 
 group = "com.rootsid.wal"
 version = "0.0.1-SNAPSHOT"
@@ -88,4 +90,26 @@ tasks.getByName<Jar>("jar") {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.register("bootRunInviter") {
+	group = "application"
+	description = "Runs this project as a Spring Boot application with the inviter profile"
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "inviter")
+		}
+	}
+	finalizedBy("bootRun")
+}
+
+tasks.register("bootRunInvitee") {
+	group = "application"
+	description = "Runs this project as a Spring Boot application with the invitee profile"
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "invitee")
+		}
+	}
+	finalizedBy("bootRun")
 }
