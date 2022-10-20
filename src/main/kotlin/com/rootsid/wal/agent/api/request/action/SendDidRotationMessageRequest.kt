@@ -15,6 +15,9 @@ data class SendDidRotationMessageRequest (
     val newPeerDid: PeerDID?,
 
     @Schema(description = "Send Did rotation message automatically.")
-    val autoSend: Boolean = true
+    val autoSend: Boolean = true,
+
+    @Schema(description = "Tell the receiver to auto-ack message to sender")
+    val autoAck: Boolean = false
 )
 

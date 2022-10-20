@@ -25,3 +25,5 @@ data class DidCommConnectionEntity(
     override val createdAt: LocalDateTime = LocalDateTime.now(),
     override val updatedAt: LocalDateTime = LocalDateTime.now()
 ) : DidCommConnection
+
+

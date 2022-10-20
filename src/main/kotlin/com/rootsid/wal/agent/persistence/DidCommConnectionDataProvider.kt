@@ -30,6 +30,9 @@ class DidCommConnectionDataProvider(private val didCommConnectionRepository: Did
     override fun list(): List<DidCommConnection> = didCommConnectionRepository.findAll().toMutableList()
 
     fun delete(id: String): Unit = didCommConnectionRepository.deleteById(id)
+
+    fun findByMyDid(myDid: String): DidCommConnection = didCommConnectionRepository.findByMyDid(myDid)
+        .orElseThrow { RuntimeException("DidComm Connection with myDid=[$myDid] not found.") }
 }
 
 interface DidCommConnectionRepository : CrudRepository<DidCommConnectionEntity, String> {
@@ -39,4 +42,6 @@ interface DidCommConnectionRepository : CrudRepository<DidCommConnectionEntity, 
     ): Optional<DidCommConnectionEntity>
 
     fun findByTheirDid(theirDid: String): Optional<DidCommConnectionEntity>
+
+    fun findByMyDid(myDid: String): Optional<DidCommConnectionEntity>
 }

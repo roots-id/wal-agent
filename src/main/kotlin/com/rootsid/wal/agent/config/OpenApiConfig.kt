@@ -43,12 +43,17 @@ class OpenApiConfig {
         val actionTag = Tag().name("actions").description("Actions to play with")
             .externalDocs(ExternalDocumentation().description("Specification")
                 .url("https://github.com/dummy"))
+
+        // Actions
+        val actionManualTag = Tag().name("actions-manual").description("Manual actions to play with")
+            .externalDocs(ExternalDocumentation().description("Specification")
+                .url("https://github.com/dummy"))
         
         // Connections
         val connectionsTag = Tag().name("connections").description("Connection management")
             .externalDocs(ExternalDocumentation().description("Specification")
                 .url("https://github.com/hyperledger/aries-rfcs/tree/9b0aaa39df7e8bd434126c4b33c097aae78d65bf/features/0160-connection-protocol"))
 
-        return listOf(connectionsTag, actionTag)
+        return listOf(connectionsTag, actionTag, actionManualTag)
     }
 }
