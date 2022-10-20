@@ -15,7 +15,7 @@ class DidCommSecretDataProvider(private val didComSecretRepository: DidCommSecre
         didComSecretRepository.save(DidCommSecretEntity(kid, secretJson))
 
     override fun findById(kid: String): DidCommSecret =
-        didComSecretRepository.findById(kid).orElseThrow { RuntimeException("DidCom Secret with id=[$kid] not found.") }
+        didComSecretRepository.findById(kid).orElseThrow { RuntimeException("DidComm Secret with id=[$kid] not found.") }
 
     override fun findIdsIn(kids: List<String>): Set<String> = didComSecretRepository.findIdsIn(kids).map { it._id }.toSet()
 

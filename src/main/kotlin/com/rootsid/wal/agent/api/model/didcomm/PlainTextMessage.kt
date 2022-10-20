@@ -1,7 +1,9 @@
 package com.rootsid.wal.agent.api.model.didcomm
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.rootsid.wal.library.didcomm.model.UnpackResult
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URI
@@ -76,9 +78,12 @@ data class PlainTextMessage(
     val attachments: List<Attachment>? = null
 )
 
-fun PlainTextMessage.toJson(): String = jacksonObjectMapper().writeValueAsString(this)
+fun PlainTextMessage.toJson(mapper: ObjectMapper = jacksonObjectMapper()): String = mapper.writeValueAsString(this)
 
 fun PlainTextMessage.isDidRotationMsg(): Boolean = (this.fromPrior?.isNotBlank() == true && this.from.isNotBlank())
 
 fun PlainTextMessage.isInvitationResponseMsg(): Boolean = Piuris.INVITATION_RESPONSE.value == this.type
+
+fun UnpackResult.toPlainTextMessage(): PlainTextMessage =
+    jacksonObjectMapper().readValue(this.message, PlainTextMessage::class.java)
 

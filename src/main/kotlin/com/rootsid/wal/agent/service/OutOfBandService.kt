@@ -1,24 +1,26 @@
 package com.rootsid.wal.agent.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.rootsid.wal.agent.api.model.didcomm.Piuris
 import com.rootsid.wal.agent.api.model.didcomm.PlainTextMessage
 import com.rootsid.wal.agent.api.model.didcomm.toJson
 import com.rootsid.wal.agent.api.model.outofband.BodyDecorator
 import com.rootsid.wal.agent.api.model.outofband.InvitationMessage
 import com.rootsid.wal.agent.api.model.outofband.toBase64
-import com.rootsid.wal.agent.api.request.action.ReceiveMessageRequest
 import com.rootsid.wal.agent.api.request.outofband.InvitationCreateRequest
 import com.rootsid.wal.agent.api.request.outofband.InvitationMessageRequest
 import com.rootsid.wal.agent.api.response.outofband.InvitationRecordResponse
 import com.rootsid.wal.agent.api.response.outofband.ReceiveInvitationResponse
 import com.rootsid.wal.agent.config.properties.OutOfBandProperties
 import com.rootsid.wal.agent.persistence.DidCommConnectionDataProvider
+import com.rootsid.wal.agent.persistence.DidCommMessageDataProvider
 import com.rootsid.wal.agent.persistence.model.DidCommConnectionEntity
-import com.rootsid.wal.agent.restclient.DidCommWebClient
+import com.rootsid.wal.agent.restclient.DidCommClientService
 import com.rootsid.wal.library.didcomm.DIDPeer
 import com.rootsid.wal.library.didcomm.common.DidCommDataTypes
-import com.rootsid.wal.library.didcomm.common.getServiceEndpoint
 import org.apache.commons.lang3.RandomStringUtils
+import org.didcommx.didcomm.model.PackEncryptedResult
+import org.didcommx.peerdid.PeerDID
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -27,10 +29,12 @@ import java.util.*
 
 @Service
 class OutOfBandService(
+    private val mapper: ObjectMapper,
     private val outOfBandProperties: OutOfBandProperties,
     private val didPeer: DIDPeer,
     private val didCommConnectionDataProvider: DidCommConnectionDataProvider,
-    private val didCommWebClient: DidCommWebClient
+    private val didCommClientService: DidCommClientService,
+    private val didCommMessageDataProvider: DidCommMessageDataProvider,
 ) {
     private val log = LoggerFactory.getLogger(OutOfBandService::class.java)
 
@@ -85,49 +89,45 @@ class OutOfBandService(
         )
 
         // Create didcomm plaintext message
-        val ptMsg = PlainTextMessage(
+        val plainTextMsgAck = PlainTextMessage(
             type = Piuris.INVITATION_RESPONSE.value,
             from = inviteeDidPeer,
             to = mutableListOf(invitationMessageRequest.invitationMessage.from),
             pthid = invitationMessageRequest.invitationMessage.id,
-            body = """{"msg": "Hi Alice"}""",
+            body = """{"msg": "Hi inviter, I'm the invitee"}""",
             createdTime = Instant.now().toEpochMilli(),
             expiresTime = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
-        ).toJson()
-        log.info("Plaintext message = [{}]", ptMsg)
-
-        val packMessage = didPeer.pack(
-            data = ptMsg, from = inviteeDidPeer,
-            to = invitationMessageRequest.invitationMessage.from
         )
-        log.info("Packed message = [{}]", packMessage)
-        log.info("Unpacked message = [{}]", didPeer.unpack(packMessage.packedMessage))
 
         if (invitationMessageRequest.autoAccept) {
-            log.info("Start auto accept process.")
-            invitationMessageRequest.invitationMessage.from.getServiceEndpoint()?.let {
-                log.info("Send invitation response ack to [{}]", it)
-                didCommWebClient.receiveMessageSynchronous(
-                    it,
-                    ReceiveMessageRequest(packMessage.packedMessage)
-                )?.body.let { response ->
-                    log.info("Result of invitation response ack.  Body = [{}]", response)
-
+            val theirDid = invitationMessageRequest.invitationMessage.from
+            didCommClientService.sendMessage(connection._id, theirDid, plainTextMsgAck)
+                .takeIf { it }
+                ?.apply {
                     return ReceiveInvitationResponse(
                         connectionId = connection._id,
                         packedMessage = "Auto accepted executed",
                         alias = invitationMessageRequest.alias
                     )
                 }
-            }
 
-            log.error("Unable to execute the auto-accept process.")
+            log.error("Unable to execute the auto-accept process.   Execute manual process.")
         }
 
         return ReceiveInvitationResponse(
             connectionId = connection._id,
-            packedMessage = packMessage.packedMessage,
+            packedMessage = packPlainTextMessage(
+                invitationMessageRequest.invitationMessage.from,
+                plainTextMsgAck
+            ).packedMessage,
             alias = invitationMessageRequest.alias
         )
+    }
+
+    private fun packPlainTextMessage(to: PeerDID, message: PlainTextMessage): PackEncryptedResult {
+        val packedMsg = didPeer.pack(data = message.toJson(mapper), from = message.from, to = to)
+        log.info("Packed message = [{}]", packedMsg)
+
+        return packedMsg
     }
 }
