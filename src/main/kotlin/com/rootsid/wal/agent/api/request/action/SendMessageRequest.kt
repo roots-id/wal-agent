@@ -10,9 +10,6 @@ data class SendMessageRequest(
     @Schema(description = "Message content", example = "Hello")
     val content: String = "Hello world!!!",
 
-    @Schema(description = "Send Did rotation message automatically.")
-    val autoSend: Boolean = true,
-
     @Schema(description = "Tell the receiver to auto-ack message to sender")
     val autoAck: Boolean = false
 )
