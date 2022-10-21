@@ -44,15 +44,12 @@ class ActionService(
                     expiresTime = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
                 )
 
-                if (payload.autoSend) {
-                    log.info("Start auto send process.")
-                    didCommClientService.sendMessage(
-                        connectionId = conn._id,
-                        to = theirDid,
-                        message = message,
-                        autoAck = payload.autoAck
-                    )
-                }
+                didCommClientService.sendMessage(
+                    connectionId = conn._id,
+                    to = theirDid,
+                    message = message,
+                    autoAck = payload.autoAck
+                )
 
                 return SendMessageResponse(packPlainTextMessage(myDid, message).packedMessage)
             }
@@ -82,15 +79,12 @@ class ActionService(
                     expiresTime = Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
                 )
 
-                if (payload.autoSend) {
-                    log.info("Start auto send process.")
-                    didCommClientService.sendMessage(
-                        connectionId = conn._id,
-                        to = theirDid,
-                        message = message,
-                        autoAck = payload.autoAck
-                    )
-                }
+                didCommClientService.sendMessage(
+                    connectionId = conn._id,
+                    to = theirDid,
+                    message = message,
+                    autoAck = payload.autoAck
+                )
 
                 return SendDidRotationMessageResponse(
                     status = "manual",
