@@ -15,6 +15,21 @@ TBD
   * Start the api application: `gradle bootRun`
 * Go to the browser: `http://localhost:8080/swagger-ui/index.html`
 
+#### Application Modes
+* Inviter mode: `gradle bootRunInviter`
+  * Default port: 8081
+  * Database name: wal-agent-inviter
+* Invitee mode: `gradle bootRunInvitee`
+  * Default port: 8082
+  * Database name: wal-agent-invitee
+
+#### Connect to MongoDB
+* Host: localhost
+* Port: 27017
+* URL: mongodb://localhost:27017/
+* User: root
+* Pass: secret
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
