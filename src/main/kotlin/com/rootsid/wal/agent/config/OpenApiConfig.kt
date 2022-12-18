@@ -40,12 +40,12 @@ class OpenApiConfig {
 
     fun getProjectTagList(): List<Tag> {
         // Actions
-        val actionTag = Tag().name("actions").description("Actions to play with")
+        val actionTag = Tag().name("actions").description("DidComm v2 - Actions to play with")
             .externalDocs(ExternalDocumentation().description("Specification")
                 .url("https://github.com/dummy"))
 
         // Actions
-        val actionManualTag = Tag().name("actions-manual").description("Manual actions to play with")
+        val actionManualTag = Tag().name("actions-manual").description("DidComm v2 - Manual actions to play with")
             .externalDocs(ExternalDocumentation().description("Specification")
                 .url("https://github.com/dummy"))
         
